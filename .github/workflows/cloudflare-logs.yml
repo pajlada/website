@@ -26,6 +26,7 @@ jobs:
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           project: ${{ env.PROJECT_NAME }}
       - name: Post Cloudflare Pages Logs
+        if: success() || failure()
         run: |
           # Get deployment logs by deployment id (https://developers.cloudflare.com/api/operations/pages-deployment-get-deployment-logs)
           deployment_logs="$(curl -sL https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects/chatterino-website/deployments/${{ steps.cf-pages.outputs.id }}/history/logs -H "Authorization: Bearer ${{ secrets.CF_LOG_TOKEN }}" | jq -r '.result.data | map(.line) | join("\n")')"
