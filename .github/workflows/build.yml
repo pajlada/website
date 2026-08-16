@@ -39,6 +39,7 @@ jobs:
           command: pages deploy out --project-name=website
 
       - name: Comment deployment-url
+        if: github.ref != 'refs/heads/master'
         uses: Chatterino/actions-comment-pull-request@main
         env:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
